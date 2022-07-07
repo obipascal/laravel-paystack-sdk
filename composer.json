@@ -1,0 +1,37 @@
+{
+	"name": "obitech-bilmapay/laravel-paystack-sdk",
+	"description": "A paystack sdk for connecting paystack services via api.",
+	"type": "library",
+	"license": "MIT",
+	"autoload": {
+		"psr-4": {
+			"ObitechBilmapay\\LaravelPaystackSdk\\": "src/",
+			"ObitechBilmapay\\LaravelPaystackSdk\\Tests\\": "tests/"
+		},
+		"files": [
+			"src/Helpers/helpers.php",
+			"src/Helpers/constants.php"
+		]
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"ObitechBilmapay\\LaravelPaystackSdk\\Tests\\": "tests"
+		}
+	},
+	"extra": {
+		"laravel": {
+			"providers": [
+				"ObitechBilmapay\\LaravelPaystackSdk\\PaystackServiceProvider"
+			],
+			"aliases": {
+				"Paystack": "ObitechBilmapay\\LaravelPaystackSdk\\Facades\\Paystack"
+			}
+		}
+	},
+	"authors": [
+		{
+			"name": "Obi Pascal",
+			"email": "pascalobi83@gmail.com"
+		}
+	]
+}
