@@ -4,19 +4,16 @@
 	"type": "library",
 	"license": "MIT",
 	"autoload": {
-		"psr-4": {
-			"ObitechBilmapay\\LaravelPaystackSdk\\": "src/",
-			"ObitechBilmapay\\LaravelPaystackSdk\\Tests\\": "tests/"
-		},
 		"files": [
 			"src/Helpers/helpers.php",
-			"src/Helpers/constants.php"
-		]
+			"src/Helpers/utils.php"
+		],
+		"psr-4": {
+			"ObitechBilmapay\\LaravelPaystackSdk\\": "src/"
+		}
 	},
 	"autoload-dev": {
-		"psr-4": {
-			"ObitechBilmapay\\LaravelPaystackSdk\\Tests\\": "tests"
-		}
+		"psr-4": {}
 	},
 	"extra": {
 		"laravel": {

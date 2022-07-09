@@ -1,96 +1,84 @@
 <?php namespace ObitechBilmapay\LaravelPaystackSdk;
 
+use Illuminate\Support\Facades\Http;
+use ObitechBilmapay\LaravelPaystackSdk\Abstraction\PaystackSdkInterface;
+use ObitechBilmapay\LaravelPaystackSdk\Helpers\HttpClientHelpers;
+use ObitechBilmapay\LaravelPaystackSdk\Helpers\PaystackSdkHelpers;
+use stdClass;
+
+/**
+ * The Official Paystack Standard Development Kit For PHP Laravel framwork
+ * @package Library
+ * @author BilmaPay by OBITECH INVENT <obitechinvents@gmail.com>
+ * @license MIT
+ * @link https://paystack.com/docs/api
+ */
 class PaystackSdk implements PaystackSdkInterface
 {
-	public string $message;
-	protected array $data;
-	public mixed $response;
+	/**
+	 * the operation status
+	 *
+	 * @var bool
+	 */
+	public bool $success;
+	/**
+	 * The api request response data
+	 *
+	 * @var object|string
+	 */
+	public object|array|string|null $response;
+	/**
+	 * The response data
+	 *
+	 * @var object|null
+	 */
+	public object|array|null $data;
+	/**
+	 * The operaion or api request error
+	 *
+	 * @var array|string
+	 */
+	protected array|string $error;
+	/**
+	 * The api resource path
+	 *
+	 * @var string
+	 */
+	protected string $resourcesPath;
 
-	public function __construct(protected string $secretKey, protected string $env = "test", protected string $baseUrl = "", protected string $appName = "BilmaPay")
-	{
-	}
+	/**
+	 * The http client
+	 *
+	 * @var \Illuminate\Support\Facades\Http
+	 */
+	protected $HttpClient;
+	/**
+	 * The http client request headers
+	 *
+	 * @var array
+	 */
+	protected array $HttpClientHeaders = [];
 
-	public static function init(string $secretKey, string $env = "test", string $baseUrl = "", string $appName = "BilmaPay")
-	{
-		return new self($secretKey, $env, $baseUrl, $appName);
-	}
+	/** The handles and helpers trait */
+	use PaystackSdkHelpers, HttpClientHelpers;
 
-	public function setData(array $newData)
+	public function __construct()
 	{
-		$this->data = $newData;
-		return $this;
-	}
-
-	public function getData()
-	{
-		return $this->data;
-	}
-
-	public function setDataItem(string $itemName, string $newValue)
-	{
-		if (!empty($itemName) && !empty($newValue)) {
-			$this->data[$itemName] = $newValue;
+		/* configure the http */
+		if (!empty(count($this->HttpClientHeaders))) {
+			/* config with headers options*/
+			$this->HttpClient = Http::connectTimeout(config("paystack.timeout", 3))
+				->retry(config("paystack.retry", 3), 100)
+				->withToken(config("paystack.secret"))
+				->acceptJson()
+				->withHeaders($this->HttpClientHeaders);
+		} else {
+			/* config without headers options */
+			$this->HttpClient = Http::connectTimeout(config("paystack.timeout", 3))
+				->retry(config("paystack.retry", 3), 100)
+				->withToken(config("paystack.secret"))
+				->acceptJson()
+				->withHeaders($this->HttpClientHeaders);
 		}
-
-		return $this;
-	}
-
-	public function removeDataItem(string $itemName)
-	{
-		if (!empty($this->data) && !empty($itemName) && isset($this->data[$itemName])) {
-			unset($this->data[$itemName]);
-		}
-
-		return $this;
-	}
-
-	public function getDataItem(string $itemName)
-	{
-		if (!empty($this->data) && !empty($itemName) && isset($this->data[$itemName])) {
-			return $this->data[$itemName];
-		}
-
-		return false;
-	}
-
-	public function setKey(string $key): PaystackSdk
-	{
-		if (!empty($key)) {
-			$this->secretKey = $key;
-		}
-
-		return $this;
-	}
-
-	public function setEndpoint(string $endpoint): PaystackSdk
-	{
-		if (!empty($endpoint)) {
-			$this->baseUrl = $endpoint;
-		}
-
-		return $this;
-	}
-
-	public function setEnv(string $env): PaystackSdk
-	{
-		if (!empty($env)) {
-			$this->env = $env;
-		}
-
-		return $this;
-	}
-
-	public function setAppName(string $appName): PaystackSdk
-	{
-		if (!empty($appName)) {
-			$this->appName = $appName;
-		}
-
-		return $this;
-	}
-
-	public function __get($name)
-	{
-		return $this->$name;
 	}
 }

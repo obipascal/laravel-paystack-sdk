@@ -7,7 +7,7 @@ class PaystackServiceProvider extends ServiceProvider
 	public function register()
 	{
 		$this->app->bind("paystack", function ($app) {
-			return new PaystackSdk(config("paystack.secret"), config("paystack.mode"), config("paystack.endpoint"), config("paystack.appname"));
+			return new PaystackApis();
 		});
 
 		/* register the paystack configs  */
