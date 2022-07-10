@@ -1,7 +1,8 @@
 <?php namespace ObitechBilmapay\LaravelPaystackSdk;
 
 use ObitechBilmapay\LaravelPaystackSdk\Apis\Customer\PaystackCustomerApi;
-use ObitechBilmapay\LaravelPaystackSdk\Misc\PaystackVerificationApi;
+use ObitechBilmapay\LaravelPaystackSdk\Apis\Misc\PaystackVerificationApi;
+use ObitechBilmapay\LaravelPaystackSdk\Apis\Transfer\PaystackTransferApi;
 
 class PaystackApis extends PaystackSdk
 {
@@ -32,5 +33,16 @@ class PaystackApis extends PaystackSdk
 	public static function Verification(): PaystackVerificationApi
 	{
 		return new PaystackVerificationApi();
+	}
+
+	/**
+	 * 1. Creates a new recipient. A duplicate account number will lead to the retrieval of the existing record.
+	 * 2. The Transfers API allows you automate sending money on your integration
+	 * @docs https://paystack.com/docs/api/#transfer-recipient, https://paystack.com/docs/api/#transfer
+	 * @return \ObitechBilmapay\LaravelPaystackSdk\Apis\Transfer\PaystackTransferApi
+	 */
+	public static function Transfer(): PaystackTransferApi
+	{
+		return new PaystackTransferApi();
 	}
 }

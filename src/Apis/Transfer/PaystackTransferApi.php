@@ -41,6 +41,9 @@ class PaystackTransferApi extends PaystackSdk
 	 */
 	protected string $recipient_currency;
 
+	/* The traits */
+	use TransferRecipientApi;
+
 	public function __construct()
 	{
 		/* This section initialized the sdk configurations so don't mess with it. */

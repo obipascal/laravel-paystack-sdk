@@ -1,4 +1,4 @@
-<?php namespace ObitechBilmapay\LaravelPaystackSdk\Misc;
+<?php namespace ObitechBilmapay\LaravelPaystackSdk\Apis\Misc;
 
 use ObitechBilmapay\LaravelPaystackSdk\PaystackSdk;
 use Exception;
