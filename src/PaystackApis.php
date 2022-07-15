@@ -1,7 +1,9 @@
 <?php namespace ObitechBilmapay\LaravelPaystackSdk;
 
+use ObitechBilmapay\LaravelPaystackSdk\Apis\Charge\PaystackChargeApi;
 use ObitechBilmapay\LaravelPaystackSdk\Apis\Customer\PaystackCustomerApi;
 use ObitechBilmapay\LaravelPaystackSdk\Apis\Misc\PaystackVerificationApi;
+use ObitechBilmapay\LaravelPaystackSdk\Apis\Transaction\PaystackTransactionApi;
 use ObitechBilmapay\LaravelPaystackSdk\Apis\Transfer\PaystackTransferApi;
 
 class PaystackApis extends PaystackSdk
@@ -28,7 +30,7 @@ class PaystackApis extends PaystackSdk
 	 * @category Feature Availability: This feature is only available to businesses in Nigeria.
 	 * @docs https://paystack.com/docs/api/#verification
 	 *
-	 * @return \ObitechBilmapay\LaravelPaystackSdk\Misc\PaystackVerificationApi
+	 * @return \ObitechBilmapay\LaravelPaystackSdk\Apis\Misc\PaystackVerificationApi
 	 */
 	public static function Verification(): PaystackVerificationApi
 	{
@@ -44,5 +46,28 @@ class PaystackApis extends PaystackSdk
 	public static function Transfer(): PaystackTransferApi
 	{
 		return new PaystackTransferApi();
+	}
+
+	/**
+	 * The Transactions API allows you create and manage payments on your integration
+	 *
+	 * @docs https://paystack.com/docs/api/#transaction-initialize
+	 *
+	 * @return \ObitechBilmapay\LaravelPaystackSdk\Apis\Transaction\PaystackTransactionApi
+	 */
+	public static function Transaction(): PaystackTransactionApi
+	{
+		return new PaystackTransactionApi();
+	}
+
+	/**
+	 * The Charge API allows you to configure payment channel of your choice when initiating a payment.
+	 * @docs https://paystack.com/docs/api/#charge
+	 *
+	 * @return \ObitechBilmapay\LaravelPaystackSdk\Apis\Charge\PaystackChargeApi
+	 */
+	public static function Charge(): PaystackChargeApi
+	{
+		return new PaystackChargeApi();
 	}
 }

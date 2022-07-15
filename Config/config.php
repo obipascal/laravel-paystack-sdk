@@ -66,5 +66,37 @@ return [
 			"banks" => "/banks",
 			"banks" => "/banks",
 		],
+
+		/* Transaction endpoint*/
+		"transaction" => [
+			"initiate" => "/transaction/initialize",
+			"verify" => "/transaction/verify/:pathParam",
+			"all" => "/transaction",
+			"single" => "/transaction/:pathParam",
+			"chargeAuth" => "/transaction/charge_authorization",
+			"checkAuth" => "/transaction/check_authorization",
+			"timeline" => "/transaction/timeline/:pathParam",
+			"totals" => "/transaction/totals",
+			"export" => "/transaction/export",
+			"partialDebit" => "/transaction/partial_debit",
+		],
+
+		/* Charge endpoint */
+		"charge" => [
+			"initiate" => "/charge",
+		],
+
+		/* Invoice endpoint */
+		"invoice" => [
+			"create" => "/paymentrequest",
+			"all" => "/paymentrequest",
+			"single" => "/paymentrequest/:pathParam",
+			"verify" => "/paymentrequest/verify/:pathParam",
+			"pushNotifi" => "/paymentrequest/notify/:pathParam",
+			"totals" => "/paymentrequest/totals",
+			"finalize" => "/paymentrequest/finalize/:pathParam",
+			"update" => "/paymentrequest/:pathParam",
+			"archive" => "/paymentrequest/archive/:pathParam",
+		],
 	],
 ];
