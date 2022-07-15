@@ -2,6 +2,7 @@
 
 use ObitechBilmapay\LaravelPaystackSdk\Apis\Charge\PaystackChargeApi;
 use ObitechBilmapay\LaravelPaystackSdk\Apis\Customer\PaystackCustomerApi;
+use ObitechBilmapay\LaravelPaystackSdk\Apis\Invoice\PaystackInvoiceApi;
 use ObitechBilmapay\LaravelPaystackSdk\Apis\Misc\PaystackVerificationApi;
 use ObitechBilmapay\LaravelPaystackSdk\Apis\Transaction\PaystackTransactionApi;
 use ObitechBilmapay\LaravelPaystackSdk\Apis\Transfer\PaystackTransferApi;
@@ -69,5 +70,17 @@ class PaystackApis extends PaystackSdk
 	public static function Charge(): PaystackChargeApi
 	{
 		return new PaystackChargeApi();
+	}
+
+	/**
+	 * The Invoices API allows you issue out and manage payment requests
+	 *
+	 * @docs https://paystack.com/docs/api/#invoice
+	 *
+	 * @return \ObitechBilmapay\LaravelPaystackSdk\Apis\Invoice\PaystackInvoiceApi
+	 */
+	public static function Invoice(): PaystackInvoiceApi
+	{
+		return new PaystackInvoiceApi();
 	}
 }
