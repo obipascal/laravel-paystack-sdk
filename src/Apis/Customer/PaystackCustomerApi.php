@@ -27,7 +27,7 @@ class PaystackCustomerApi extends PaystackSdk
 	public function createCustomer(string $firstName, string $lastName, string $email, string $phoneNumber, array $metadata = []): PaystackCustomerApi
 	{
 		try {
-			$customerData = ["first_name" => $firstName, "last_name" => $lastName, "email" => $email, "phone_number" => $phoneNumber, "metadata" => $metadata];
+			$customerData = ["first_name" => $firstName, "last_name" => $lastName, "email" => $email, "phone" => $phoneNumber, "metadata" => $metadata];
 
 			$validator = Validator::make(
 				$customerData,
