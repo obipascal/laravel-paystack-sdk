@@ -34,7 +34,7 @@ class PaystackCustomerApi extends PaystackSdk
 				[
 					"first_name" => ["bail", "required", "string"],
 					"last_name" => ["bail", "required", "string"],
-					"phone_number" => ["bail", "required", "string"],
+					"phone" => ["bail", "required", "string"],
 					"email" => ["bail", "required", "email"],
 				],
 				[] // custom validation messages
