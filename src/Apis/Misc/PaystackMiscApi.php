@@ -16,21 +16,26 @@ class PaystackMiscApi extends PaystackSdk
 	/**
 	 * List / fetch banks
 	 *
-	 * @param string $accountNumber Account Number
-	 * @param string $bankCode You can get the list of bank codes by calling the List Bank endpoint
+	 * @param string $country The targed country. Default to Nigeria
+	 * @param string $perPage Number of banks to list per page.
+	 * @param array $params Other paystack query string params.
+	 * @see https://paystack.com/docs/api/#miscellaneous-bank
 	 *
 	 * @return PaystackMiscApi
 	 */
-	public function resolveAcountNumber(string $accountNumber, string $bankCode): PaystackMiscApi
-	{
+	public function fetchBanks(
+		string $country = "nigeria",
+		int $perPage = 50,
+		array $params = []
+	): PaystackMiscApi {
 		try {
-			$customerData = ["account_number" => $accountNumber, "bank_code" => $bankCode];
+			$customerData = ["country" => $country, "perPage" => $perPage, ...$params];
 
 			$validator = Validator::make(
 				$customerData,
 				[
-					"account_number" => ["bail", "required", "string"],
-					"bank_code" => ["bail", "required", "string"],
+					"country" => ["bail", "required", "string"],
+					"perPage" => ["bail", "required", "numeric"],
 				],
 				[] // custom validation messages
 			);
@@ -39,9 +44,7 @@ class PaystackMiscApi extends PaystackSdk
 				return $this->setError($validator->errors()->getMessages());
 			}
 
-			$response = $this->resource(config("paystack.endpoint.misc.resolve_account_number"))->get(
-				$customerData
-			);
+			$response = $this->resource(config("paystack.endpoint.misc.banks"))->get($customerData);
 
 			if (!$response->successful()) {
 				return $this->setError($response->json());

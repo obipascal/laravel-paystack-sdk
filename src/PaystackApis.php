@@ -3,6 +3,7 @@
 use ObitechBilmapay\LaravelPaystackSdk\Apis\Charge\PaystackChargeApi;
 use ObitechBilmapay\LaravelPaystackSdk\Apis\Customer\PaystackCustomerApi;
 use ObitechBilmapay\LaravelPaystackSdk\Apis\Invoice\PaystackInvoiceApi;
+use ObitechBilmapay\LaravelPaystackSdk\Apis\Misc\PaystackMiscApi;
 use ObitechBilmapay\LaravelPaystackSdk\Apis\Misc\PaystackVerificationApi;
 use ObitechBilmapay\LaravelPaystackSdk\Apis\Transaction\PaystackTransactionApi;
 use ObitechBilmapay\LaravelPaystackSdk\Apis\Transfer\PaystackTransferApi;
@@ -82,5 +83,17 @@ class PaystackApis extends PaystackSdk
 	public static function Invoice(): PaystackInvoiceApi
 	{
 		return new PaystackInvoiceApi();
+	}
+
+	/**
+	 * Paystack Miscellaneous apis endpoints
+	 *
+	 * @see https://paystack.com/docs/api/#miscellaneous-bank
+	 *
+	 * @return \ObitechBilmapay\LaravelPaystackSdk\Apis\Misc\PaystackMiscApi
+	 */
+	public static function Misc(): PaystackMiscApi
+	{
+		return new PaystackMiscApi();
 	}
 }
