@@ -30,5 +30,8 @@
 			"name": "Obi Pascal",
 			"email": "pascalobi83@gmail.com"
 		}
-	]
+	],
+	"require-dev": {
+		"laravel/laravel": "^9.3"
+	}
 }
