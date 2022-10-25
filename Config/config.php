@@ -63,8 +63,7 @@ return [
 			"resolve_account_number" => "/bank/resolve",
 			"validate_account" => "/bank/validate",
 			"resolve_card_bin" => "/decision/bin/:pathParam",
-			"banks" => "/banks",
-			"banks" => "/banks",
+			"banks" => "/bank",
 		],
 
 		/* Transaction endpoint*/
