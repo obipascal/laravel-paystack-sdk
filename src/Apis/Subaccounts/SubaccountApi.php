@@ -1,6 +1,7 @@
 <?php namespace ObitechBilmapay\LaravelPaystackSdk\Apis\Subaccounts;
 
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use ObitechBilmapay\LaravelPaystackSdk\PaystackSdk;
 
 /**
@@ -263,7 +264,7 @@ class SubaccountApi extends PaystackSdk
 	}
 
 	/**
-	 * Get details of a subaccount on your integration.
+	 * Activate or deactivate a subaccount on your integration.
 	 *
 	 * @param string $id_or_code The subaccout ID
 	 * @param boolean $status Activate or deactivate a subaccount. Set value to true to activate subaccount or false to deactivate the subaccount.
@@ -289,6 +290,50 @@ class SubaccountApi extends PaystackSdk
 			unset($payloadData["subaccount_id"]);
 
 			$payloadData["active"] = $status;
+
+			$response = $this->resource(config("paystack.endpoint.subaccounts.update"), $id_or_code)->put($payloadData);
+
+			if (!$response->successful()) {
+				return $this->setError($response->json());
+			} else {
+				return $this->setResponse($response->object());
+			}
+		} catch (\Exception $th) {
+			return $this->setError($th->getMessage());
+		}
+	}
+
+	/**
+	 * Schedule a subaccount payout on your integration.
+	 *
+	 * @param string $id_or_code The subaccout ID
+	 * @param string $payout_schedule Any of **auto**, **weekly**, **monthly**, **manual**. **Auto** means payout is T+1 and manual means payout to the subaccount should only be made when requested. Defaults to auto
+	 *
+	 * |Payout Schedule | Description
+	 * |----------- | -----------|
+	 * | **auto** | Auto means payout is T+1 (Transaction plus 1 day) |
+	 * | **weekly** | Weekly means payout to the subaccount will be sent on the 7th day of the week at 12 midnight |
+	 * | **monthl** | Monthly means payout to the subaccount will be sent on 30th of very month at 12 midnight |
+	 * | **manual** | Manual means payout to the subaccount should only be made when requested |
+	 *
+	 * @return SubaccountApi
+	 */
+	public function schedulePayout(string $id_or_code, string $payout_schedule): SubaccountApi
+	{
+		try {
+			$payloadData["subaccount_id"] = $id_or_code;
+			$payloadData["settlement_schedule"] = $payout_schedule;
+
+			$validationParams["subaccount_id"] = ["bail", "string", "required"];
+			$validationParams["settlement_schedule"] = ["bail", "string", "required", Rule::in(["auto", "weekly", "monthly", "manual"])];
+
+			$validator = Validator::make($payloadData, $validationParams);
+
+			if ($validator->fails()) {
+				return $this->setError($validator->errors()->getMessages());
+			}
+
+			unset($payloadData["subaccount_id"]);
 
 			$response = $this->resource(config("paystack.endpoint.subaccounts.update"), $id_or_code)->put($payloadData);
 
