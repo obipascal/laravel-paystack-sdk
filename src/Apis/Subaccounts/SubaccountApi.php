@@ -17,7 +17,7 @@ class SubaccountApi extends PaystackSdk
 	 * @param string $businessName The business name for this subaccount.
 	 * @param string $bankCode The verified bank code of the bank
 	 * @param string $accountNumber The verified account number associated with this subaccount
-	 * @param float|int $charge This is the flat fee amount or percentage charge you want to charge this subaccount. NOTE: if $charge_as_flat_fee is set to TRUE the charge should be an integer amount otherwise a floating percentage.
+	 * @param float|int $charge This is percentage charge you want to charge this subaccount
 	 * @param bool $charge_as_flat_fee
 	 * @param array<string,string|array> $customerInfo
 	 *
@@ -39,7 +39,7 @@ class SubaccountApi extends PaystackSdk
 	 *
 	 * @return SubaccountApi
 	 */
-	public function create(string $businessName, string $bankCode, string $accountNumber, float|int $charge, bool $charge_as_flat_fee = false, array $customerInfo = []): SubaccountApi
+	public function create(string $businessName, string $bankCode, string $accountNumber, float|int $charge, array $customerInfo = []): SubaccountApi
 	{
 		try {
 			if (!empty(count($customerInfo))) {
@@ -67,18 +67,12 @@ class SubaccountApi extends PaystackSdk
 				}
 			}
 
-			if ($charge_as_flat_fee) {
-				$payloadData = ["business_name" => $businessName, "settlement_bank" => $bankCode, "account_number" => $accountNumber, "transaction_charge" => $charge];
-
-				$validationParams["transaction_charge"] = ["bail", "numeric", "required"];
-			} else {
-				$payloadData = ["business_name" => $businessName, "settlement_bank" => $bankCode, "account_number" => $accountNumber, "percentage_charge" => $charge];
-				$validationParams["percentage_charge"] = ["bail", "numeric", "required"];
-			}
+			$payloadData = ["business_name" => $businessName, "settlement_bank" => $bankCode, "account_number" => $accountNumber, "percentage_charge" => $charge];
 
 			/* merge customer data */
 			$payloadData = [...$payloadData, ...$customerInfo];
 
+			$validationParams["percentage_charge"] = ["bail", "numeric", "required"];
 			$validationParams["business_name"] = ["bail", "string", "required"];
 			$validationParams["settlement_bank"] = ["bail", "numeric", "required"];
 			$validationParams["description"] = ["bail", "string", "nullable"];
@@ -93,7 +87,6 @@ class SubaccountApi extends PaystackSdk
 				return $this->setError($validator->errors()->getMessages());
 			}
 
-			dd($validationParams);
 			$response = $this->resource(config("paystack.endpoint.subaccounts.create"))->post($payloadData);
 
 			if (!$response->successful()) {
