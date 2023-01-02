@@ -99,8 +99,7 @@ class PaystackApis extends PaystackSdk
 	}
 
 	/**
-	 * Handles all subaccount operation such as create, retreive, update, and listing all subaccounts.
-	 * additional information can be found on the paystack documentation
+	 * The Subaccounts API allows you create and manage subaccounts on your integration. Subaccounts can be used to split payment between two accounts (your main account and a sub account)
 	 * @see https://paystack.com/docs/api/#subaccount-create
 	 *
 	 * @return \ObitechBilmapay\LaravelPaystackSdk\Apis\Subaccounts\SubaccountApi
