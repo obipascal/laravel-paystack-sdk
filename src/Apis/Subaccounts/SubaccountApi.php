@@ -76,7 +76,6 @@ class SubaccountApi extends PaystackSdk
 				$validationParams["percentage_charge"] = ["bail", "numeric", "required"];
 			}
 
-			dd($validationParams);
 			/* merge customer data */
 			$payloadData = [...$payloadData, ...$customerInfo];
 
@@ -94,6 +93,7 @@ class SubaccountApi extends PaystackSdk
 				return $this->setError($validator->errors()->getMessages());
 			}
 
+			dd($validationParams);
 			$response = $this->resource(config("paystack.endpoint.subaccounts.create"))->post($payloadData);
 
 			if (!$response->successful()) {
