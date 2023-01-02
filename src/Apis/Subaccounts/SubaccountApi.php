@@ -76,6 +76,7 @@ class SubaccountApi extends PaystackSdk
 				$validationParams["percentage_charge"] = ["bail", "numeric", "required"];
 			}
 
+			dd($validationParams);
 			/* merge customer data */
 			$payloadData = [...$payloadData, ...$customerInfo];
 
