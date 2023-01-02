@@ -4,7 +4,7 @@ return [
 	/**
 	 * Paystack test or live secret key
 	 */
-	"secret" => env("PAYSTACK_SECRET", ""),
+	"secret" => env("PAYSTACK_SECRET_KEY", ""),
 	/**
 	 * Paystack API base url: This property is provided if they is any changes in
 	 * the feature.
