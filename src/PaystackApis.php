@@ -5,6 +5,7 @@ use ObitechBilmapay\LaravelPaystackSdk\Apis\Customer\PaystackCustomerApi;
 use ObitechBilmapay\LaravelPaystackSdk\Apis\Invoice\PaystackInvoiceApi;
 use ObitechBilmapay\LaravelPaystackSdk\Apis\Misc\PaystackMiscApi;
 use ObitechBilmapay\LaravelPaystackSdk\Apis\Misc\PaystackVerificationApi;
+use ObitechBilmapay\LaravelPaystackSdk\Apis\Subaccounts\SubaccountApi;
 use ObitechBilmapay\LaravelPaystackSdk\Apis\Transaction\PaystackTransactionApi;
 use ObitechBilmapay\LaravelPaystackSdk\Apis\Transfer\PaystackTransferApi;
 
@@ -95,5 +96,17 @@ class PaystackApis extends PaystackSdk
 	public static function Misc(): PaystackMiscApi
 	{
 		return new PaystackMiscApi();
+	}
+
+	/**
+	 * Handles all subaccount operation such as create, retreive, update, and listing all subaccounts.
+	 * additional information can be found on the paystack documentation
+	 * @see https://paystack.com/docs/api/#subaccount-create
+	 *
+	 * @return \ObitechBilmapay\LaravelPaystackSdk\Apis\Subaccounts\SubaccountApi
+	 */
+	public static function Subaccount(): SubaccountApi
+	{
+		return new SubaccountApi();
 	}
 }

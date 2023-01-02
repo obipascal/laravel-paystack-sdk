@@ -97,5 +97,13 @@ return [
 			"update" => "/paymentrequest/:pathParam",
 			"archive" => "/paymentrequest/archive/:pathParam",
 		],
+
+		/* Subaccounts */
+		"subaccounts" => [
+			"create" => "/subaccount",
+			"index" => "/subaccount",
+			"show" => "/subaccount/:pathParam",
+			"update" => "/subaccount/:pathParam",
+		],
 	],
 ];
