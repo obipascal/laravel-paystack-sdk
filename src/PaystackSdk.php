@@ -24,21 +24,21 @@ class PaystackSdk implements PaystackSdkInterface
 	/**
 	 * The api request response data
 	 *
-	 * @var object|string
+	 * @var object|array|string|null
 	 */
-	public object|array|string|null $response;
+	public $response;
 	/**
 	 * The response data
 	 *
-	 * @var object|null
+	 * @var object|array|null
 	 */
-	public object|array|null $data;
+	public $data;
 	/**
 	 * The operaion or api request error
 	 *
 	 * @var array|string
 	 */
-	protected array|string $error;
+	protected $error;
 	/**
 	 * The api resource path
 	 *
