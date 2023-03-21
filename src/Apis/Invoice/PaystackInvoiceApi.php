@@ -90,8 +90,7 @@ class PaystackInvoiceApi extends PaystackSdk
 				"amount" => $amount * 100,
 				"customer" => $customer,
 				"due_date" => $dueDate,
-				"currency" => $currency,
-				"description" => $description,
+				"currency" => $currency ?? config("paystack.currency"),
 				...$options,
 			];
 
