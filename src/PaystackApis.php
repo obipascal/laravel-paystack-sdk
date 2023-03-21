@@ -6,6 +6,7 @@ use ObitechBilmapay\LaravelPaystackSdk\Apis\Invoice\PaystackInvoiceApi;
 use ObitechBilmapay\LaravelPaystackSdk\Apis\Misc\PaystackMiscApi;
 use ObitechBilmapay\LaravelPaystackSdk\Apis\Misc\PaystackVerificationApi;
 use ObitechBilmapay\LaravelPaystackSdk\Apis\Subaccounts\SubaccountApi;
+use ObitechBilmapay\LaravelPaystackSdk\Apis\Subscription\SubscriptionBaseApi;
 use ObitechBilmapay\LaravelPaystackSdk\Apis\Transaction\PaystackTransactionApi;
 use ObitechBilmapay\LaravelPaystackSdk\Apis\Transfer\PaystackTransferApi;
 
@@ -107,5 +108,18 @@ class PaystackApis extends PaystackSdk
 	public static function Subaccount(): SubaccountApi
 	{
 		return new SubaccountApi();
+	}
+
+	/**
+	 * The Subscriptions API allows you create and manage recurring payment on your integration.
+	 * The Plans API allows you create and manage installment payment options on your integration.
+	 * @see https://paystack.com/docs/api/subscription
+	 * @see https://paystack.com/docs/api/plan
+	 *
+	 * @return \ObitechBilmapay\LaravelPaystackSdk\Apis\Subscription\SubscriptionBaseApi
+	 */
+	public static function Subscription(): SubscriptionBaseApi
+	{
+		return new SubscriptionBaseApi();
 	}
 }

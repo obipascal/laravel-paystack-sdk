@@ -22,6 +22,10 @@ return [
 	 * The number of times the request should be retried if they was a any error at the initial try
 	 */
 	"retry" => (int) env("PAYSTACK_RETRY", 3),
+	/**
+	 * Currency
+	 */
+	"currency" => env("PAYSTACK_CURRENCY", "NGN"),
 
 	/**
 	 * This the the paystack resource endpoints routes
@@ -104,6 +108,22 @@ return [
 			"index" => "/subaccount",
 			"show" => "/subaccount/:pathParam",
 			"update" => "/subaccount/:pathParam",
+		],
+
+		/* Subscription */
+		"subscription" => [
+			"create" => "/subscription",
+			"list" => "/subscription",
+			"show" => "/subscription/:pathParam",
+			"enable" => "/subscription/enable",
+			"disable" => "/subscription/disable",
+			/* Plan Api */
+			"plan" => [
+				"create" => "/plan",
+				"list" => "/plan",
+				"show" => "/plan/:pathParam",
+				"update" => "/plan/:pathParam",
+			],
 		],
 	],
 ];
