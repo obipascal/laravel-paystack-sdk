@@ -28,9 +28,9 @@ class PaystackTransactionApi extends PaystackSdk
 	public function createLink(int|float $amount, string $email, string $currency = "NGN", string $reference = null, array $options = []): PaystackTransactionApi
 	{
 		try {
-			$customerData = ["amount" => $amount * 100, "email" => $email, "reference" => $reference, "currency" => $currency];
+			$paramsData = ["amount" => $amount * 100, "email" => $email, "reference" => $reference, "currency" => $currency];
 
-			$validator = Validator::make($customerData, [
+			$validator = Validator::make($paramsData, [
 				"amount" => ["bail", "required", "numeric"],
 				"email" => ["bail", "required", "email"],
 				"currency" => ["bail", "required", "string", "size:3"],
@@ -41,10 +41,54 @@ class PaystackTransactionApi extends PaystackSdk
 			}
 
 			if (!empty($reference)) {
-				$customerData["reference"] = $reference;
+				$paramsData["reference"] = $reference;
 			}
 
-			$data = !empty(count($options)) ? [...$customerData, ...$options] : $customerData;
+			$data = !empty(count($options)) ? [...$paramsData, ...$options] : $paramsData;
+
+			$response = $this->resource(config("paystack.endpoint.transaction.initiate"))->post($data);
+
+			if (!$response->successful()) {
+				return $this->setError($response->json());
+			} else {
+				return $this->setResponse($response->object());
+			}
+		} catch (Exception $th) {
+			return $this->setError($th->getMessage());
+		}
+	}
+
+	/**
+	 * Initialize a transaction from using a subscription plan code. This will automatically create a subscription for that plan.
+	 *
+	 * @param string $planCode The plan card as returned when calling the subscription apis
+	 * @param string $email Customer's email address
+	 * @param string $currency The transaction currency (NGN, GHS, ZAR or USD). Defaults to your integration currency.
+	 * @param string|null $reference Unique transaction reference. Only -, ., = and alphanumeric characters allowed.
+	 * @param array $optionals This could be any other paystack optional parameters on their documentation you which to pass along the api call  view a list of them here => https://paystack.com/docs/api/#transaction-initialize
+	 *
+	 * @return PaystackTransactionApi
+	 */
+	public function createPlanCode(string $planCode, string $email, string $currency = "NGN", string $reference = null, array $optionals = []): PaystackTransactionApi
+	{
+		try {
+			$paramsData = ["plan" => $planCode, "email" => $email, "reference" => $reference, "currency" => $currency];
+
+			$validator = Validator::make($paramsData, [
+				"plan" => ["bail", "required", "string"],
+				"email" => ["bail", "required", "email"],
+				"currency" => ["bail", "required", "string", "size:3", Rule::in(["NGN", "ZAR", "GHN", "USD"])],
+			]);
+
+			if ($validator->fails()) {
+				return $this->setError($validator->errors()->getMessages());
+			}
+
+			if (!empty($reference)) {
+				$paramsData["reference"] = $reference;
+			}
+
+			$data = !empty(count($optionals)) ? [...$paramsData, ...$optionals] : $paramsData;
 
 			$response = $this->resource(config("paystack.endpoint.transaction.initiate"))->post($data);
 
@@ -68,9 +112,9 @@ class PaystackTransactionApi extends PaystackSdk
 	public function verify(string $reference): PaystackTransactionApi
 	{
 		try {
-			$customerData = ["reference" => $reference];
+			$paramsData = ["reference" => $reference];
 
-			$validator = Validator::make($customerData, [
+			$validator = Validator::make($paramsData, [
 				"reference" => ["bail", "required", "string"],
 			]);
 
@@ -175,9 +219,9 @@ class PaystackTransactionApi extends PaystackSdk
 	public function chargeAuth(int|float $amount, string $email, string $authcode, string $currency = "NGN", string|int $reference = 0, array $options): PaystackTransactionApi
 	{
 		try {
-			$customerData = ["amount" => $amount * 100, "email" => $email, "authorization_code" => $authcode, "reference" => $reference, "currency" => $currency];
+			$paramsData = ["amount" => $amount * 100, "email" => $email, "authorization_code" => $authcode, "reference" => $reference, "currency" => $currency];
 
-			$validator = Validator::make($customerData, [
+			$validator = Validator::make($paramsData, [
 				"amount" => ["bail", "required", "numeric"],
 				"email" => ["bail", "required", "email"],
 				"currency" => ["bail", "required", "string", "size:3"],
@@ -189,10 +233,10 @@ class PaystackTransactionApi extends PaystackSdk
 			}
 
 			if (!empty($reference)) {
-				$customerData["reference"] = $reference;
+				$paramsData["reference"] = $reference;
 			}
 
-			$data = !empty(count($options)) ? [...$customerData, ...$options] : $customerData;
+			$data = !empty(count($options)) ? [...$paramsData, ...$options] : $paramsData;
 
 			$response = $this->resource(config("paystack.endpoint.transaction.chargeAuth"))->post($data);
 
@@ -226,9 +270,9 @@ class PaystackTransactionApi extends PaystackSdk
 	public function checkAuth(int|float $amount, string $email, string $authcode, string $currency = "NGN"): PaystackTransactionApi
 	{
 		try {
-			$customerData = ["amount" => $amount * 100, "email" => $email, "authorization_code" => $authcode, "currency" => $currency];
+			$paramsData = ["amount" => $amount * 100, "email" => $email, "authorization_code" => $authcode, "currency" => $currency];
 
-			$validator = Validator::make($customerData, [
+			$validator = Validator::make($paramsData, [
 				"amount" => ["bail", "required", "numeric"],
 				"email" => ["bail", "required", "email"],
 				"currency" => ["bail", "required", "string", "size:3"],
@@ -239,7 +283,7 @@ class PaystackTransactionApi extends PaystackSdk
 				return $this->setError($validator->errors()->getMessages());
 			}
 
-			$response = $this->resource(config("paystack.endpoint.transaction.checkAuth"))->post($customerData);
+			$response = $this->resource(config("paystack.endpoint.transaction.checkAuth"))->post($paramsData);
 
 			if (!$response->successful()) {
 				return $this->setError($response->json());
@@ -297,13 +341,13 @@ class PaystackTransactionApi extends PaystackSdk
 	{
 		try {
 			if (!empty($from) && !empty($page)) {
-				$customerData = ["from" => $from, "to" => $to, "perPage" => $perPage, "page" => $page];
+				$paramsData = ["from" => $from, "to" => $to, "perPage" => $perPage, "page" => $page];
 			} else {
-				$customerData = ["perPage" => $perPage, "page" => $page];
+				$paramsData = ["perPage" => $perPage, "page" => $page];
 			}
 
 			$validator = Validator::make(
-				$customerData,
+				$paramsData,
 				!empty($from) && !empty($to)
 					? [
 						"perPage" => ["bail", "required", "numeric"],
@@ -321,7 +365,7 @@ class PaystackTransactionApi extends PaystackSdk
 				return $this->setError($validator->errors()->getMessages());
 			}
 
-			$response = $this->resource(config("paystack.endpoint.transaction.totals"))->get($customerData);
+			$response = $this->resource(config("paystack.endpoint.transaction.totals"))->get($paramsData);
 
 			if (!$response->successful()) {
 				return $this->setError($response->json());
@@ -370,9 +414,9 @@ class PaystackTransactionApi extends PaystackSdk
 	public function partialDebit(int|float $amount, string $email, string $authcode, string $currency = "NGN", string $atLeast = "", string|int $reference = ""): PaystackTransactionApi
 	{
 		try {
-			$customerData = ["amount" => $amount * 100, "email" => $email, "authorization_code" => $authcode, "currency" => $currency];
+			$paramsData = ["amount" => $amount * 100, "email" => $email, "authorization_code" => $authcode, "currency" => $currency];
 
-			$validator = Validator::make($customerData, [
+			$validator = Validator::make($paramsData, [
 				"amount" => ["bail", "required", "numeric"],
 				"email" => ["bail", "required", "email"],
 				"currency" => ["bail", "required", "string", "size:3"],
@@ -384,14 +428,14 @@ class PaystackTransactionApi extends PaystackSdk
 			}
 
 			if (!empty($reference)) {
-				$customerData["reference"] = $reference;
+				$paramsData["reference"] = $reference;
 			}
 
 			if (!empty($atLeast)) {
-				$customerData["at_least"] = $atLeast;
+				$paramsData["at_least"] = $atLeast;
 			}
 
-			$response = $this->resource(config("paystack.endpoint.transaction.partialDebit"))->post($customerData);
+			$response = $this->resource(config("paystack.endpoint.transaction.partialDebit"))->post($paramsData);
 
 			if (!$response->successful()) {
 				return $this->setError($response->json());
