@@ -69,7 +69,7 @@ class PaystackTransactionApi extends PaystackSdk
 	 *
 	 * @return PaystackTransactionApi
 	 */
-	public function createPlanCode(string $planCode, string $email, string $currency = "NGN", string $reference = null, array $optionals = []): PaystackTransactionApi
+	public function createFromPlanCode(string $planCode, string $email, string $currency = "NGN", string $reference = null, array $optionals = []): PaystackTransactionApi
 	{
 		try {
 			$paramsData = ["plan" => $planCode, "email" => $email, "reference" => $reference, "currency" => $currency];
