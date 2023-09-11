@@ -125,5 +125,16 @@ return [
 				"update" => "/plan/:pathParam",
 			],
 		],
+
+		/* Dedicated Virtual Accounts (DVAs) */
+		"dva" => [
+			"create" => "/dedicated_account",
+			"assign" => "/dedicated_account/assign",
+			"list" => "/dedicated_account",
+			"show" => "/dedicated_account/:pathParam",
+			"requery" => "/dedicated_account",
+			"deactivate" => "/dedicated_account/:pathParam",
+			"providers" => "/dedicated_account/available_providers",
+		],
 	],
 ];

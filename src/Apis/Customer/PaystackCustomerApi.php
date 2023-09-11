@@ -7,6 +7,8 @@ use ObitechBilmapay\LaravelPaystackSdk\PaystackSdk;
 
 class PaystackCustomerApi extends PaystackSdk
 {
+	use PaystackVirtualAccountApi;
+
 	public function __construct()
 	{
 		/* This section initialized the sdk configurations so don't mess with it. */
