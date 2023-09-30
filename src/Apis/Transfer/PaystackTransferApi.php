@@ -134,7 +134,7 @@ class PaystackTransferApi extends PaystackSdk
 				/* initiate transfer  */
 				$recipient = $resolveRecipient->response->data->recipient_code;
 
-				$this->send($amount, $recipient, null, $currency, $reference, $remark);
+				return $this->send($amount, $recipient, null, $currency, $reference, $remark);
 			}
 		} catch (Exception $th) {
 			return $this->setError($th->getMessage());
