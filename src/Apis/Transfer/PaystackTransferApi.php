@@ -94,15 +94,15 @@ class PaystackTransferApi extends PaystackSdk
 			if (Str::startsWith($recipient, "RCP_")) {
 				/* intiate transfer */
 
-				$trenasferParams["source"] = "balance";
-				$trenasferParams["amount"] = $amount * 100;
-				$trenasferParams["recipient"] = $recipient;
-				$trenasferParams["currency"] = $currency;
+				$transferParams["source"] = "balance";
+				$transferParams["amount"] = $amount * 100;
+				$transferParams["recipient"] = $recipient;
+				$transferParams["currency"] = $currency;
 
 				/* add transaction remarks */
 				$appName = config("paystack.appname");
 				if (!empty($remark) && !empty($appName)) {
-					$trenasferParams["reason"] = "{$appName}: $remark ";
+					$transferParams["reason"] = "{$appName}: $remark ";
 				}
 
 				$response = $this->resource(config("paystack.endpoint.transfer.send"))->post($customerData);
@@ -131,7 +131,28 @@ class PaystackTransferApi extends PaystackSdk
 				}
 
 				/* initiate transfer  */
-				return $this->send($amount, $resolveRecipient->response->data->recipient_code, null, $currency, $reference, $remark);
+				$recipient = $resolveRecipient->response->data->recipient_code;
+
+				/* intiate transfer */
+
+				$transferParams["source"] = "balance";
+				$transferParams["amount"] = $amount * 100;
+				$transferParams["recipient"] = $recipient;
+				$transferParams["currency"] = $currency;
+
+				/* add transaction remarks */
+				$appName = config("paystack.appname");
+				if (!empty($remark) && !empty($appName)) {
+					$transferParams["reason"] = "{$appName}: $remark ";
+				}
+
+				$response = $this->resource(config("paystack.endpoint.transfer.send"))->post($customerData);
+
+				if (!$response->successful()) {
+					return $this->setError($response->json());
+				} else {
+					return $this->setResponse($response->object());
+				}
 			}
 		} catch (Exception $th) {
 			return $this->setError($th->getMessage());
