@@ -305,4 +305,25 @@ class PaystackTransferApi extends PaystackSdk
 			return $this->setError($th->getMessage());
 		}
 	}
+
+	/**
+	 * Fetch paystack integration available balance
+	 *
+	 *
+	 * @return PaystackTransferApi
+	 */
+	public function fetchBalance(): PaystackTransferApi
+	{
+		try {
+			$response = $this->resource(config("paystack.endpoint.transfer.balance"))->get();
+
+			if (!$response->successful()) {
+				return $this->setError($response->json());
+			} else {
+				return $this->setResponse($response->object());
+			}
+		} catch (Exception $th) {
+			return $this->setError($th->getMessage());
+		}
+	}
 }

@@ -60,6 +60,7 @@ return [
 			"all" => "/transfer",
 			"single" => "/transfer/:pathParam",
 			"verify" => "/transfer/verify/:pathParam",
+			"balance" => "/balance",
 		],
 
 		/* Miscellaneous api endpoints */
