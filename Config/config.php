@@ -137,5 +137,9 @@ return [
 			"deactivate" => "/dedicated_account/:pathParam",
 			"providers" => "/dedicated_account/available_providers",
 		],
+
+		"refunds" => [
+			"create" => "/refund",
+		],
 	],
 ];

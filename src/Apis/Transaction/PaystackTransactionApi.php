@@ -446,4 +446,36 @@ class PaystackTransactionApi extends PaystackSdk
 			return $this->setError($th->getMessage());
 		}
 	}
+
+	/**
+	 * Create a transaction refund
+	 *
+	 * @param string $reference
+	 *
+	 * @return PaystackTransactionApi
+	 */
+	public function createRefunds(string|int $reference = ""): PaystackTransactionApi
+	{
+		try {
+			$paramsData = ["transaction" => $reference];
+
+			$validator = Validator::make($paramsData, [
+				"transaction" => ["bail", "required", "string"],
+			]);
+
+			if ($validator->fails()) {
+				return $this->setError($validator->errors()->getMessages());
+			}
+
+			$response = $this->resource(config("paystack.endpoint.refunds.create"))->post($paramsData);
+
+			if (!$response->successful()) {
+				return $this->setError($response->json());
+			} else {
+				return $this->setResponse($response->object());
+			}
+		} catch (Exception $th) {
+			return $this->setError($th->getMessage());
+		}
+	}
 }
